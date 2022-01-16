@@ -1,6 +1,7 @@
 package com.bot.bottelegrama.botlogic;
 
 import com.bot.bottelegrama.processor.Processor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -15,11 +16,8 @@ public class BotRunmethod extends TelegramLongPollingBot {
     @Value("${telegram.bot.token}")
     private String token;
 
-    private final Processor processor;
+    private Processor processor;
 
-    public BotRunmethod(Processor processor) {
-        this.processor = processor;
-    }
 
     @Override
     public String getBotUsername() {
@@ -36,4 +34,8 @@ public class BotRunmethod extends TelegramLongPollingBot {
         processor.processorUpdata(update);
     }
 
+    @Autowired
+    public void setProcessor(Processor processor) {
+        this.processor = processor;
+    }
 }

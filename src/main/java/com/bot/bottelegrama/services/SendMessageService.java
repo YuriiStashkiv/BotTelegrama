@@ -26,6 +26,26 @@ public class SendMessageService {
 //
 //    }
 
+    public void welcomeKeyboard(Message message){
+        var markup = new ReplyKeyboardMarkup();
+        var keyboardRows = new ArrayList<KeyboardRow>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardRow row2 = new KeyboardRow();
+        row1.add("/givemelessens");
+        keyboardRows.add(row1);
+        markup.setKeyboard(keyboardRows);
+        markup.setResizeKeyboard(true);
+        markup.setOneTimeKeyboard(true);
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("Вітаю, Студенте!\n"
+                + "Я можу тоді надіслати розклад заннять з твоєї групи\n"
+                + "Для старту нічого особливого не треба, " +
+                "просто нажими на кнопку, або ввдеди команду /givemelessens і ми почнемо");
+        sendMessage.setChatId(String.valueOf(message.getChatId()));
+        sendMessage.setReplyMarkup(markup);
+        messageSender.sendMessage(sendMessage);
+    }
+
     public void kurs(Message message){
         var markup = new ReplyKeyboardMarkup();
         var keyboardRows = new ArrayList<KeyboardRow>();
