@@ -7,6 +7,15 @@ public class BotUser {
     private String kurs;
     private String year;
     private String group;
+    private String yourKurs;
+
+    public String getYourKurs() {
+        return yourKurs;
+    }
+
+    public void setYourKurs(String yourKurs) {
+        this.yourKurs = yourKurs;
+    }
 
     public Long getId() {
         return id;
