@@ -1,8 +1,12 @@
 package com.bot.bottelegrama.handlers;
 
+import com.bot.bottelegrama.cache.Cache;
+import com.bot.bottelegrama.domain.BotUser;
+import com.bot.bottelegrama.domain.Position;
 import com.bot.bottelegrama.messagesender.MessageSender;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -18,15 +22,18 @@ public class MessageHandler implements Handler<Message> {
 
     private final MessageSender messageSender;
 
-    public MessageHandler(MessageSender messageSender) {
+    private final Cache<BotUser> cache;
+
+    public MessageHandler(MessageSender messageSender, Cache<BotUser> cache) {
         this.messageSender = messageSender;
+        this.cache = cache;
     }
 
 
     @Override
     public void choose(Message message) {
-        if (message.hasText()){
-            if(message.getText().equals("/start")){
+        if (message.hasText()) {
+            if (message.getText().equals("/start")) {
                 var markup = new ReplyKeyboardMarkup();
                 var keyboardRows = new ArrayList<KeyboardRow>();
                 KeyboardRow row1 = new KeyboardRow();
@@ -37,7 +44,7 @@ public class MessageHandler implements Handler<Message> {
                 markup.setResizeKeyboard(true);
                 markup.setOneTimeKeyboard(true);
                 SendMessage sendMessage = new SendMessage();
-                sendMessage.setText("Вітаю, "+ message.getFrom().getUserName() +"!\n"
+                sendMessage.setText("Вітаю, " + message.getFrom().getUserName() + "!\n"
                         + "Я можу тобі надіслати розклад заннять з твоєї групи\n"
                         + "Для старту нічого особливого не треба, " +
                         "просто нажими на кнопку, або введи команду /givemelessens і ми почнемо");
@@ -45,30 +52,26 @@ public class MessageHandler implements Handler<Message> {
                 sendMessage.setReplyMarkup(markup);
                 messageSender.sendMessage(sendMessage);
             }
-            if (message.getText().equals("/givemelessens")) {
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setChatId(String.valueOf(message.getChatId()));
-                sendMessage.setText("Вибери свій курс...");
-                var inlineKeyboardMarkup = new InlineKeyboardMarkup();
-                List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-                keyboard.add(
-                        Collections.singletonList(
-                                InlineKeyboardButton.builder()
-                                        .text("КН")
-                                        .callbackData("IT-T")
-                                        .build()
-                        ));
-                keyboard.add(
-                        Collections.singletonList(
-                                InlineKeyboardButton.builder()
-                                        .text("КБ")
-                                        .callbackData("CS")
-                                        .build()
-                        ));
-                inlineKeyboardMarkup.setKeyboard(keyboard);
-                sendMessage.setReplyMarkup(inlineKeyboardMarkup);
-                messageSender.sendMessage(sendMessage);
-            }
         }
+            if (message.hasText()) {
+                if (message.getText().equals("/givemelessens")) {
+                    messageSender.sendMessage(
+                            SendMessage.builder()
+                                    .text("Для старту треба дати згоду на обробку ваших повідомлень")
+                                    .chatId(String.valueOf(message.getChatId()))
+                                    .replyMarkup(InlineKeyboardMarkup.builder()
+                                            .keyboardRow(Collections.singletonList(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Я згоден")
+                                                            .callbackData("Agree")
+                                                            .build()))
+                                            .keyboardRow(Collections.singletonList(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Я не згоден")
+                                                            .callbackData("Disagree")
+                                                            .build()))
+                                            .build()).build());
+                }
+            }
     }
 }
