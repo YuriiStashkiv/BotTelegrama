@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CallbackQueryHandler implements Handler<CallbackQuery> {
@@ -47,43 +49,37 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     editMessageText.setText("Обери рік твого навчання...");
                     editMessageText.setReplyMarkup(
                             InlineKeyboardMarkup.builder()
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("1-ий рік")
                                                     .callbackData("1")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(Collections.singletonList(
+                                                    .build(),
                                             InlineKeyboardButton.builder()
                                                     .text("2-ий рік")
                                                     .callbackData("2")
                                                     .build()
                                     ))
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("3-ий рік")
                                                     .callbackData("3")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(Collections.singletonList(
+                                                    .build(),
                                             InlineKeyboardButton.builder()
                                                     .text("4-ий рік")
                                                     .callbackData("4")
                                                     .build()
                                     ))
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("5-ий рік")
                                                     .callbackData("5")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(Collections.singletonList(
+                                                    .build(),
                                             InlineKeyboardButton.builder()
                                                     .text("6-ий рік")
                                                     .callbackData("6")
                                                     .build()
                                     ))
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("\u2B05 Go back")
                                                     .callbackData("Go To INPUT_KURS")
@@ -103,13 +99,13 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         editMessageText5.setText("Виберіть свій курс...");
                         editMessageText5.setReplyMarkup(
                                 InlineKeyboardMarkup.builder()
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("КН")
                                                         .callbackData("КН")
                                                         .build()
                                         ))
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("КБ")
                                                         .callbackData("КБ")
@@ -127,19 +123,17 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         editMessageText1.setText("Обери номер своєї групи...");
                         editMessageText1.setReplyMarkup(
                                 InlineKeyboardMarkup.builder()
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("1-а група")
                                                         .callbackData("1")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(Collections.singletonList(
+                                                        .build(),
                                                 InlineKeyboardButton.builder()
                                                         .text("2-а група")
                                                         .callbackData("2")
                                                         .build()
                                         ))
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("\u2B05 Go back")
                                                         .callbackData("Go To INPUT_YEAR")
@@ -160,43 +154,37 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         editMessageText4.setText("Обери рік твого навчання...");
                         editMessageText4.setReplyMarkup(
                                 InlineKeyboardMarkup.builder()
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("1-ий рік")
                                                         .callbackData("1")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(Collections.singletonList(
+                                                        .build(),
                                                 InlineKeyboardButton.builder()
                                                         .text("2-ий рік")
                                                         .callbackData("2")
                                                         .build()
                                         ))
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("3-ий рік")
                                                         .callbackData("3")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(Collections.singletonList(
+                                                        .build(),
                                                 InlineKeyboardButton.builder()
                                                         .text("4-ий рік")
                                                         .callbackData("4")
                                                         .build()
                                         ))
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("5-ий рік")
                                                         .callbackData("5")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(Collections.singletonList(
+                                                        .build(),
                                                 InlineKeyboardButton.builder()
                                                         .text("6-ий рік")
                                                         .callbackData("6")
                                                         .build()
                                         ))
-                                        .keyboardRow(Collections.singletonList(
+                                        .keyboardRow(List.of(
                                                 InlineKeyboardButton.builder()
                                                         .text("\u2B05 Go back")
                                                         .callbackData("Go To INPUT_KURS")
@@ -215,12 +203,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                                 + user.getGroup() + "\n" +
                                 "Правильно?");
                         editMessageText2.setReplyMarkup(InlineKeyboardMarkup.builder()
-                                .keyboardRow(Collections.singletonList(
+                                .keyboardRow(List.of(
                                         InlineKeyboardButton.builder()
                                                 .text("Так")
                                                 .callbackData("Yes")
-                                                .build()))
-                                .keyboardRow(Collections.singletonList(
+                                                .build(),
                                         InlineKeyboardButton.builder()
                                                 .text("Ні")
                                                 .callbackData("No")
@@ -252,13 +239,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                             editMessageText3.setText("Чи не бажаєте пройти реєстарцію ще раз?");
                             editMessageText3.setReplyMarkup(
                                     InlineKeyboardMarkup.builder()
-                                            .keyboardRow(Collections.singletonList(
+                                            .keyboardRow(List.of(
                                                     InlineKeyboardButton.builder()
                                                             .text("Так")
                                                             .callbackData("yes")
-                                                            .build()
-                                            ))
-                                            .keyboardRow(Collections.singletonList(
+                                                            .build(),
                                                     InlineKeyboardButton.builder()
                                                             .text("Ні")
                                                             .callbackData("no")
@@ -268,7 +253,7 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                             break;
                     }
 
-                    //if user want to do reg again or no
+                    //if user want to do reg again after checking prev check
                     switch (callbackQuery.getData()) {
                         case "yes":
                             user.setPosition(Position.INPUT_KURS);
@@ -280,13 +265,13 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                                     "Спершу виберіть свій курс...");
                             editMessageText3.setReplyMarkup(
                                     InlineKeyboardMarkup.builder()
-                                            .keyboardRow(Collections.singletonList(
+                                            .keyboardRow(List.of(
                                                     InlineKeyboardButton.builder()
                                                             .text("КН")
                                                             .callbackData("КН")
                                                             .build()
                                             ))
-                                            .keyboardRow(Collections.singletonList(
+                                            .keyboardRow(List.of(
                                                     InlineKeyboardButton.builder()
                                                             .text("КБ")
                                                             .callbackData("КБ")
@@ -306,6 +291,34 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                             cache.remove(user);
                             break;
                     }
+
+                    //if user want to log out
+                    switch (callbackQuery.getData()){
+                        case "logoutYes":
+                            messageSender.sendEditMessage(
+                                    EditMessageText.builder()
+                                            .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
+                                            .messageId(callbackQuery.getMessage().getMessageId())
+                                            .text("Тоді до нових зустрічей "+user.getUsername()+", я вас не забуду...")
+                                            .build()
+                            );
+                            cache.remove(user);
+                            try {
+                                TimeUnit.SECONDS.sleep(5);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            messageSender.sendEditMessage(
+                                    EditMessageText.builder()
+                                            .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
+                                            .messageId(callbackQuery.getMessage().getMessageId())
+                                            .text("Данні користувача видаленні.")
+                                            .build()
+                            );
+                            break;
+                        case "logoutNo":
+                            break;
+                    }
                     break;
             }
         } else {
@@ -321,13 +334,13 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                             "Спершу виберіть свій курс...");
                     editMessageText.setReplyMarkup(
                             InlineKeyboardMarkup.builder()
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("КН")
                                                     .callbackData("КН")
                                                     .build()
                                     ))
-                                    .keyboardRow(Collections.singletonList(
+                                    .keyboardRow(List.of(
                                             InlineKeyboardButton.builder()
                                                     .text("КБ")
                                                     .callbackData("КБ")

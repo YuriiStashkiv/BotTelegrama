@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class MessageHandler implements Handler<Message> {
@@ -38,6 +39,7 @@ public class MessageHandler implements Handler<Message> {
                 KeyboardRow row1 = new KeyboardRow();
                 KeyboardRow row2 = new KeyboardRow();
                 row1.add("/register");
+                row1.add("/logout");
                 row2.add("All about me\uD83E\uDD2F");
                 keyboardRows.add(row1);
                 keyboardRows.add(row2);
@@ -54,23 +56,62 @@ public class MessageHandler implements Handler<Message> {
             }
 
             if (message.getText().equals("/register")) {
-                messageSender.sendMessage(
-                        SendMessage.builder()
-                                .text("Для старту треба дати згоду на обробку ваших повідомлень")
-                                .chatId(String.valueOf(message.getChatId()))
-                                .replyMarkup(InlineKeyboardMarkup.builder()
-                                        .keyboardRow(Collections.singletonList(
-                                                InlineKeyboardButton.builder()
-                                                        .text("Я згоден(згодна)")
-                                                        .callbackData("Agree")
-                                                        .build()))
-                                        .keyboardRow(Collections.singletonList(
-                                                InlineKeyboardButton.builder()
-                                                        .text("Я не згоден(згодна)")
-                                                        .callbackData("Disagree")
-                                                        .build()))
-                                        .build())
-                                .build());
+                if (user != null) {
+                    messageSender.sendMessage(
+                            SendMessage.builder()
+                                    .chatId(String.valueOf(message.getChatId()))
+                                    .text(user.getUsername()+", ти вже зареєструвався, навіщо ти робиш це знову")
+                                    .build()
+                    );
+                } else {
+                    messageSender.sendMessage(
+                            SendMessage.builder()
+                                    .text("Для старту треба дати згоду на обробку ваших повідомлень")
+                                    .chatId(String.valueOf(message.getChatId()))
+                                    .replyMarkup(InlineKeyboardMarkup.builder()
+                                            .keyboardRow(List.of(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Я згоден(згодна)")
+                                                            .callbackData("Agree")
+                                                            .build()))
+                                            .keyboardRow(List.of(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Я не згоден(згодна)")
+                                                            .callbackData("Disagree")
+                                                            .build()))
+                                            .build())
+                                    .build());
+                }
+            }
+
+            if (message.getText().equals("/logout")) {
+                if (user != null) {
+                    messageSender.sendMessage(
+                            SendMessage.builder()
+                                    .chatId(String.valueOf(message.getChatId()))
+                                    .text("Ви впевненні? Ця дія є незворотня")
+                                    .replyMarkup(InlineKeyboardMarkup.builder()
+                                            .keyboardRow(List.of(
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Так")
+                                                            .callbackData("logoutYes")
+                                                            .build(),
+                                                    InlineKeyboardButton.builder()
+                                                            .text("Ні")
+                                                            .callbackData("logoutNo")
+                                                            .build()
+                                            ))
+                                            .build())
+                                    .build());
+                } else {
+                    messageSender.sendMessage(
+                            SendMessage.builder()
+                                    .chatId(String.valueOf(message.getChatId()))
+                                    .text("Ви не можете вийти, бо ви не ввійшли в систему.\n" +
+                                            "Нагадую, щоб ввійти просто введіть команду /register")
+                                    .build()
+                    );
+                }
             }
 
             if (message.getText().equals("All about me\uD83E\uDD2F")) {
