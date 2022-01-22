@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,214 +42,55 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 case INPUT_KURS:
                     user.setKurs(callbackQuery.getData());
                     user.setPosition(Position.INPUT_YEAR);
-                    Integer messageId = callbackQuery.getMessage().getMessageId();
-                    var editMessageText = new EditMessageText();
-                    editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                    editMessageText.setMessageId(messageId);
-                    editMessageText.setText("Обери рік твого навчання...");
-                    editMessageText.setReplyMarkup(
-                            InlineKeyboardMarkup.builder()
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("1-ий рік")
-                                                    .callbackData("1")
-                                                    .build(),
-                                            InlineKeyboardButton.builder()
-                                                    .text("2-ий рік")
-                                                    .callbackData("2")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("3-ий рік")
-                                                    .callbackData("3")
-                                                    .build(),
-                                            InlineKeyboardButton.builder()
-                                                    .text("4-ий рік")
-                                                    .callbackData("4")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("5-ий рік")
-                                                    .callbackData("5")
-                                                    .build(),
-                                            InlineKeyboardButton.builder()
-                                                    .text("6-ий рік")
-                                                    .callbackData("6")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("\u2B05 Go back")
-                                                    .callbackData("Go To INPUT_KURS")
-                                                    .build()
-                                    ))
-                                    .build());
-                    messageSender.sendEditMessage(editMessageText);
+                    createMessage(callbackQuery, "Обери рік твого навчання...", 3, 2,
+                            true, "Go To INPUT_KURS",
+                            "1-ий рік", "1", "2-ий рік", "2", "3-ій рік", "3", "4-ий рік", "4",
+                            "5-ий рік", "5", "6-ий рік", "6");
                     break;
                 //setting year and prepering message for setting group
                 case INPUT_YEAR:
                     if (callbackQuery.getData().equals("Go To INPUT_KURS")) {
                         user.setPosition(Position.INPUT_KURS);
-                        Integer messageId5 = callbackQuery.getMessage().getMessageId();
-                        var editMessageText5 = new EditMessageText();
-                        editMessageText5.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                        editMessageText5.setMessageId(messageId5);
-                        editMessageText5.setText("Виберіть свій курс...");
-                        editMessageText5.setReplyMarkup(
-                                InlineKeyboardMarkup.builder()
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("КН")
-                                                        .callbackData("КН")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("КБ")
-                                                        .callbackData("КБ")
-                                                        .build()
-                                        ))
-                                        .build());
-                        messageSender.sendEditMessage(editMessageText5);
+                        createMessage(callbackQuery, "Гаразд, тоді повторимо все з початку.\n" +
+                                        "Спершу виберіть свій курс...", 1, 2,
+                                "КН", "КН", "КБ", "КБ");
                     } else {
                         user.setYear(callbackQuery.getData());
                         user.setPosition(Position.INPUT_GROUP);
-                        Integer messageId1 = callbackQuery.getMessage().getMessageId();
-                        var editMessageText1 = new EditMessageText();
-                        editMessageText1.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                        editMessageText1.setMessageId(messageId1);
-                        editMessageText1.setText("Обери номер своєї групи...");
-                        editMessageText1.setReplyMarkup(
-                                InlineKeyboardMarkup.builder()
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("1-а група")
-                                                        .callbackData("1")
-                                                        .build(),
-                                                InlineKeyboardButton.builder()
-                                                        .text("2-а група")
-                                                        .callbackData("2")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("\u2B05 Go back")
-                                                        .callbackData("Go To INPUT_YEAR")
-                                                        .build()
-                                        ))
-                                        .build());
-                        messageSender.sendEditMessage(editMessageText1);
+                        createMessage(callbackQuery, "Обери номер своєї групи...", 1, 2,
+                                true, "Go To INPUT_YEAR",
+                                "1-а група", "1", "2-а група", "2");
                     }
                     break;
                 //setting group and prepering message for checking is it right
                 case INPUT_GROUP:
                     if (callbackQuery.getData().equals("Go To INPUT_YEAR")) {
                         user.setPosition(Position.INPUT_YEAR);
-                        Integer messageId4 = callbackQuery.getMessage().getMessageId();
-                        var editMessageText4 = new EditMessageText();
-                        editMessageText4.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                        editMessageText4.setMessageId(messageId4);
-                        editMessageText4.setText("Обери рік твого навчання...");
-                        editMessageText4.setReplyMarkup(
-                                InlineKeyboardMarkup.builder()
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("1-ий рік")
-                                                        .callbackData("1")
-                                                        .build(),
-                                                InlineKeyboardButton.builder()
-                                                        .text("2-ий рік")
-                                                        .callbackData("2")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("3-ий рік")
-                                                        .callbackData("3")
-                                                        .build(),
-                                                InlineKeyboardButton.builder()
-                                                        .text("4-ий рік")
-                                                        .callbackData("4")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("5-ий рік")
-                                                        .callbackData("5")
-                                                        .build(),
-                                                InlineKeyboardButton.builder()
-                                                        .text("6-ий рік")
-                                                        .callbackData("6")
-                                                        .build()
-                                        ))
-                                        .keyboardRow(List.of(
-                                                InlineKeyboardButton.builder()
-                                                        .text("\u2B05 Go back")
-                                                        .callbackData("Go To INPUT_KURS")
-                                                        .build()
-                                        ))
-                                        .build());
-                        messageSender.sendEditMessage(editMessageText4);
+                        createMessage(callbackQuery, "Обери рік твого навчання...", 3, 2,
+                                true, "Go To INPUT_KURS",
+                                "1-ий рік", "1", "2-ий рік", "2", "3-ій рік", "3", "4-ий рік", "4",
+                                "5-ий рік", "5", "6-ий рік", "6");
                     } else {
                         user.setGroup(callbackQuery.getData());
                         user.setPosition(Position.NONE);
-                        Integer messageId2 = callbackQuery.getMessage().getMessageId();
-                        var editMessageText2 = new EditMessageText();
-                        editMessageText2.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                        editMessageText2.setMessageId(messageId2);
-                        editMessageText2.setText("Твоя група - це " + user.getKurs() + user.getYear()
+                        createMessage(callbackQuery, "Твоя група - це " + user.getKurs() + user.getYear()
                                 + user.getGroup() + "\n" +
-                                "Правильно?");
-                        editMessageText2.setReplyMarkup(InlineKeyboardMarkup.builder()
-                                .keyboardRow(List.of(
-                                        InlineKeyboardButton.builder()
-                                                .text("Так")
-                                                .callbackData("Yes")
-                                                .build(),
-                                        InlineKeyboardButton.builder()
-                                                .text("Ні")
-                                                .callbackData("No")
-                                                .build()))
-                                .build());
-                        messageSender.sendEditMessage(editMessageText2);
+                                "Правильно?", 1, 2, "Так", "Yes", "Ні", "No");
                     }
                     break;
                 case NONE:
                     //checking if reg is correct
                     switch (callbackQuery.getData()) {
                         case "Yes":
-                            Integer messageId5 = callbackQuery.getMessage().getMessageId();
                             user.setYourKurs(user.getKurs() + user.getYear()
                                     + user.getGroup());
-                            messageSender.sendEditMessage(
-                                    EditMessageText.builder()
-                                            .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
-                                            .messageId(messageId5)
-                                            .text("Реєстрація успішна!\u263A")
-                                            .build());
+                            createMessage(callbackQuery, "Реєстрація успішна!\u263A");
+
                             break;
                         //if no we asking if user want to do reg again
                         case "No":
-                            Integer messageId3 = callbackQuery.getMessage().getMessageId();
-                            var editMessageText3 = new EditMessageText();
-                            editMessageText3.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                            editMessageText3.setMessageId(messageId3);
-                            editMessageText3.setText("Чи не бажаєте пройти реєстарцію ще раз?");
-                            editMessageText3.setReplyMarkup(
-                                    InlineKeyboardMarkup.builder()
-                                            .keyboardRow(List.of(
-                                                    InlineKeyboardButton.builder()
-                                                            .text("Так")
-                                                            .callbackData("yes")
-                                                            .build(),
-                                                    InlineKeyboardButton.builder()
-                                                            .text("Ні")
-                                                            .callbackData("no")
-                                                            .build()
-                                            )).build());
-                            messageSender.sendEditMessage(editMessageText3);
+                            createMessage(callbackQuery, "Чи не бажаєте пройти реєстарцію ще раз?", 1, 2,
+                                    "Так", "yes", "Ні", "no");
                             break;
                     }
 
@@ -257,64 +98,28 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     switch (callbackQuery.getData()) {
                         case "yes":
                             user.setPosition(Position.INPUT_KURS);
-                            Integer messageId3 = callbackQuery.getMessage().getMessageId();
-                            var editMessageText3 = new EditMessageText();
-                            editMessageText3.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                            editMessageText3.setMessageId(messageId3);
-                            editMessageText3.setText("Гаразд, тоді давай повторимо з початку.\n" +
-                                    "Спершу виберіть свій курс...");
-                            editMessageText3.setReplyMarkup(
-                                    InlineKeyboardMarkup.builder()
-                                            .keyboardRow(List.of(
-                                                    InlineKeyboardButton.builder()
-                                                            .text("КН")
-                                                            .callbackData("КН")
-                                                            .build()
-                                            ))
-                                            .keyboardRow(List.of(
-                                                    InlineKeyboardButton.builder()
-                                                            .text("КБ")
-                                                            .callbackData("КБ")
-                                                            .build()
-                                            ))
-                                            .build());
-                            messageSender.sendEditMessage(editMessageText3);
+                            createMessage(callbackQuery, "Гаразд, тоді повторимо все з початку.\n" +
+                                            "Спершу виберіть свій курс...", 1, 2,
+                                    "КН", "КН", "КБ", "КБ");
                             break;
                         case "no":
-                            Integer messageId4 = callbackQuery.getMessage().getMessageId();
-                            var editMessageText4 = new EditMessageText();
-                            editMessageText4.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                            editMessageText4.setMessageId(messageId4);
-                            editMessageText4.setText("Тоді бувай, " +
-                                    user.getUsername() + ", гарного дня!");
-                            messageSender.sendEditMessage(editMessageText4);
+                            createMessage(callbackQuery, "Тоді бувай, " + user.getUsername() + ", гарного дня!");
                             cache.remove(user);
                             break;
                     }
 
                     //if user want to log out
-                    switch (callbackQuery.getData()){
+                    switch (callbackQuery.getData()) {
                         case "logoutYes":
-                            messageSender.sendEditMessage(
-                                    EditMessageText.builder()
-                                            .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
-                                            .messageId(callbackQuery.getMessage().getMessageId())
-                                            .text("Тоді до нових зустрічей "+user.getUsername()+", я вас не забуду...")
-                                            .build()
-                            );
+                            createMessage(callbackQuery, "Тоді до нових зустрічей "
+                                    + user.getUsername() + ", я вас не забуду...");
                             cache.remove(user);
                             try {
                                 TimeUnit.SECONDS.sleep(5);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            messageSender.sendEditMessage(
-                                    EditMessageText.builder()
-                                            .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
-                                            .messageId(callbackQuery.getMessage().getMessageId())
-                                            .text("Данні користувача видаленні.")
-                                            .build()
-                            );
+                            createMessage(callbackQuery, "Данні користувача видаленні.");
                             break;
                         case "logoutNo":
                             break;
@@ -326,39 +131,90 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             switch (callbackQuery.getData()) {
                 case "Agree":
                     cache.add(yourGroupYearAndKurs(callbackQuery));
-                    Integer messageId = callbackQuery.getMessage().getMessageId();
-                    var editMessageText = new EditMessageText();
-                    editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                    editMessageText.setMessageId(messageId);
-                    editMessageText.setText("Гаразд, тоді почнемо.\n" +
-                            "Спершу виберіть свій курс...");
-                    editMessageText.setReplyMarkup(
-                            InlineKeyboardMarkup.builder()
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("КН")
-                                                    .callbackData("КН")
-                                                    .build()
-                                    ))
-                                    .keyboardRow(List.of(
-                                            InlineKeyboardButton.builder()
-                                                    .text("КБ")
-                                                    .callbackData("КБ")
-                                                    .build()
-                                    ))
-                                    .build());
-                    messageSender.sendEditMessage(editMessageText);
+                    createMessage(callbackQuery, "Гаразд, тоді почнемо.\n" +
+                                    "Спершу виберіть свій курс...", 1, 2,
+                            "КН", "КН", "КБ", "КБ");
                     break;
                 case "Disagree":
-                    Integer messageId2 = callbackQuery.getMessage().getMessageId();
-                    var editMessageText2 = new EditMessageText();
-                    editMessageText2.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-                    editMessageText2.setMessageId(messageId2);
-                    editMessageText2.setText("Тоді я працювати не можу, гарного дня, " +
+                    createMessage(callbackQuery, "Тоді я працювати не можу, гарного дня, " +
                             callbackQuery.getFrom().getUserName() + "!");
-                    messageSender.sendEditMessage(editMessageText2);
                     break;
             }
+        }
+    }
+
+    private void createMessage(CallbackQuery callbackQuery, String text) {
+        messageSender.sendEditMessage(
+                EditMessageText.builder()
+                        .chatId(String.valueOf(callbackQuery.getMessage().getChatId()))
+                        .messageId(callbackQuery.getMessage().getMessageId())
+                        .text(text)
+                        .build()
+        );
+
+    }
+
+    private void createMessage(CallbackQuery callbackQuery, String text,
+                               int column, int row,
+                               String... buttonNameAndData) {
+        int b = 0;
+        var editMessageText = new EditMessageText();
+        editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
+        editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
+        editMessageText.setText(text);
+
+        var inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> columns = new ArrayList<List<InlineKeyboardButton>>();
+
+        for (int ab = column; ab > 0; ab--) {
+            List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
+            for (int ad = row; ad > 0; ad--) {
+                var inlineKeyboardButton = new InlineKeyboardButton();
+                inlineKeyboardButton.setText(buttonNameAndData[b]);
+                inlineKeyboardButton.setCallbackData(buttonNameAndData[b + 1]);
+                b = b + 2;
+                rows.add(inlineKeyboardButton);
+            }
+            columns.add(rows);
+        }
+        inlineKeyboardMarkup.setKeyboard(columns);
+        editMessageText.setReplyMarkup(inlineKeyboardMarkup);
+        messageSender.sendEditMessage(editMessageText);
+    }
+
+    private void createMessage(CallbackQuery callbackQuery, String text,
+                               int column, int row, boolean backButton, String dataForBack,
+                               String... buttonNameAndData) {
+        if (backButton) {
+            int a = 0;
+            var editMessageText = new EditMessageText();
+            editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
+            editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
+            editMessageText.setText(text);
+
+            var inlineKeyboardMarkup = new InlineKeyboardMarkup();
+            List<List<InlineKeyboardButton>> columns = new ArrayList<List<InlineKeyboardButton>>();
+
+            for (int ab = column; ab > 0; ab--) {
+                List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
+                for (int ad = row; ad > 0; ad--) {
+                    var inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText(buttonNameAndData[a]);
+                    inlineKeyboardButton.setCallbackData(buttonNameAndData[a + 1]);
+                    a = a + 2;
+                    rows.add(inlineKeyboardButton);
+                }
+                columns.add(rows);
+            }
+            var inlineKeyboardButton = new InlineKeyboardButton();
+            List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
+            inlineKeyboardButton.setText("\u2B05 Go back");
+            inlineKeyboardButton.setCallbackData(dataForBack);
+            rows.add(inlineKeyboardButton);
+            columns.add(rows);
+            inlineKeyboardMarkup.setKeyboard(columns);
+            editMessageText.setReplyMarkup(inlineKeyboardMarkup);
+            messageSender.sendEditMessage(editMessageText);
         }
     }
 }
