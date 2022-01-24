@@ -18,7 +18,6 @@ public class BotRunmethod extends TelegramLongPollingBot {
 
     private Processor processor;
 
-
     @Override
     public String getBotUsername() {
         return username;

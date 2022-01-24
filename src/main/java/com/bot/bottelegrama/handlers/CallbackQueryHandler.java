@@ -42,7 +42,9 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 case INPUT_KURS:
                     user.setKurs(callbackQuery.getData());
                     user.setPosition(Position.INPUT_YEAR);
-                    createMessage(callbackQuery, "Обери рік твого навчання...", 3, 2,
+                    createMessage(callbackQuery,
+                            "Обери рік твого навчання...",
+                            3, 2,
                             true, "Go To INPUT_KURS",
                             "1-ий рік", "1", "2-ий рік", "2", "3-ій рік", "3", "4-ий рік", "4",
                             "5-ий рік", "5", "6-ий рік", "6");
@@ -51,13 +53,18 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 case INPUT_YEAR:
                     if (callbackQuery.getData().equals("Go To INPUT_KURS")) {
                         user.setPosition(Position.INPUT_KURS);
-                        createMessage(callbackQuery, "Гаразд, тоді повторимо все з початку.\n" +
-                                        "Спершу виберіть свій курс...", 1, 2,
+                        createMessage(callbackQuery,
+                                "Гаразд, тоді повторимо все з початку.\n" +
+                                        "Спершу виберіть свій курс...",
+                                1, 2,
+                                false, null,
                                 "КН", "КН", "КБ", "КБ");
                     } else {
                         user.setYear(callbackQuery.getData());
                         user.setPosition(Position.INPUT_GROUP);
-                        createMessage(callbackQuery, "Обери номер своєї групи...", 1, 2,
+                        createMessage(callbackQuery,
+                                "Обери номер своєї групи...",
+                                1, 2,
                                 true, "Go To INPUT_YEAR",
                                 "1-а група", "1", "2-а група", "2");
                     }
@@ -66,16 +73,22 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 case INPUT_GROUP:
                     if (callbackQuery.getData().equals("Go To INPUT_YEAR")) {
                         user.setPosition(Position.INPUT_YEAR);
-                        createMessage(callbackQuery, "Обери рік твого навчання...", 3, 2,
+                        createMessage(callbackQuery,
+                                "Обери рік твого навчання...",
+                                3, 2,
                                 true, "Go To INPUT_KURS",
                                 "1-ий рік", "1", "2-ий рік", "2", "3-ій рік", "3", "4-ий рік", "4",
                                 "5-ий рік", "5", "6-ий рік", "6");
                     } else {
                         user.setGroup(callbackQuery.getData());
                         user.setPosition(Position.NONE);
-                        createMessage(callbackQuery, "Твоя група - це " + user.getKurs() + user.getYear()
+                        createMessage(callbackQuery,
+                                "Твоя група - це " + user.getKurs() + user.getYear()
                                 + user.getGroup() + "\n" +
-                                "Правильно?", 1, 2, "Так", "Yes", "Ні", "No");
+                                "Правильно?",
+                                1, 2,
+                                false, null,
+                                "Так", "Yes", "Ні", "No");
                     }
                     break;
                 case NONE:
@@ -84,12 +97,15 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         case "Yes":
                             user.setYourKurs(user.getKurs() + user.getYear()
                                     + user.getGroup());
-                            createMessage(callbackQuery, "Реєстрація успішна!\u263A");
+                            createMessage(callbackQuery,
+                                    "Реєстрація успішна!\u263A");
 
                             break;
                         //if no we asking if user want to do reg again
                         case "No":
-                            createMessage(callbackQuery, "Чи не бажаєте пройти реєстарцію ще раз?", 1, 2,
+                            createMessage(callbackQuery, "Чи не бажаєте пройти реєстарцію ще раз?",
+                                    1, 2,
+                                    false, null,
                                     "Так", "yes", "Ні", "no");
                             break;
                     }
@@ -98,8 +114,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     switch (callbackQuery.getData()) {
                         case "yes":
                             user.setPosition(Position.INPUT_KURS);
-                            createMessage(callbackQuery, "Гаразд, тоді повторимо все з початку.\n" +
-                                            "Спершу виберіть свій курс...", 1, 2,
+                            createMessage(callbackQuery,
+                                    "Гаразд, тоді повторимо все з початку.\n" +
+                                            "Спершу виберіть свій курс...",
+                                    1, 2,
+                                    false, null,
                                     "КН", "КН", "КБ", "КБ");
                             break;
                         case "no":
@@ -111,7 +130,8 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                     //if user want to log out
                     switch (callbackQuery.getData()) {
                         case "logoutYes":
-                            createMessage(callbackQuery, "Тоді до нових зустрічей "
+                            createMessage(callbackQuery,
+                                    "Тоді до нових зустрічей "
                                     + user.getUsername() + ", я вас не забуду...");
                             cache.remove(user);
                             try {
@@ -119,9 +139,12 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            createMessage(callbackQuery, "Данні користувача видаленні.");
+                            createMessage(callbackQuery,
+                                    "Данні користувача видаленні.");
                             break;
                         case "logoutNo":
+                            createMessage(callbackQuery,
+                                    "Гаразд тоді!");
                             break;
                     }
                     break;
@@ -132,7 +155,8 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                 case "Agree":
                     cache.add(yourGroupYearAndKurs(callbackQuery));
                     createMessage(callbackQuery, "Гаразд, тоді почнемо.\n" +
-                                    "Спершу виберіть свій курс...", 1, 2,
+                                    "Спершу виберіть свій курс...",
+                            1, 2, false, null,
                             "КН", "КН", "КБ", "КБ");
                     break;
                 case "Disagree":
@@ -151,39 +175,11 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
                         .text(text)
                         .build()
         );
-
     }
 
-    private void createMessage(CallbackQuery callbackQuery, String text,
-                               int column, int row,
-                               String... buttonNameAndData) {
-        int b = 0;
-        var editMessageText = new EditMessageText();
-        editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
-        editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
-        editMessageText.setText(text);
-
-        var inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> columns = new ArrayList<List<InlineKeyboardButton>>();
-
-        for (int ab = column; ab > 0; ab--) {
-            List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
-            for (int ad = row; ad > 0; ad--) {
-                var inlineKeyboardButton = new InlineKeyboardButton();
-                inlineKeyboardButton.setText(buttonNameAndData[b]);
-                inlineKeyboardButton.setCallbackData(buttonNameAndData[b + 1]);
-                b = b + 2;
-                rows.add(inlineKeyboardButton);
-            }
-            columns.add(rows);
-        }
-        inlineKeyboardMarkup.setKeyboard(columns);
-        editMessageText.setReplyMarkup(inlineKeyboardMarkup);
-        messageSender.sendEditMessage(editMessageText);
-    }
 
     private void createMessage(CallbackQuery callbackQuery, String text,
-                               int column, int row, boolean backButton, String dataForBack,
+                               int columns, int rows, boolean backButton, String dataForBack,
                                String... buttonNameAndData) {
         if (backButton) {
             int a = 0;
@@ -193,26 +189,52 @@ public class CallbackQueryHandler implements Handler<CallbackQuery> {
             editMessageText.setText(text);
 
             var inlineKeyboardMarkup = new InlineKeyboardMarkup();
-            List<List<InlineKeyboardButton>> columns = new ArrayList<List<InlineKeyboardButton>>();
+            List<List<InlineKeyboardButton>> column = new ArrayList<>();
 
-            for (int ab = column; ab > 0; ab--) {
-                List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
-                for (int ad = row; ad > 0; ad--) {
+            for (int ab = columns; ab > 0; ab--) {
+                List<InlineKeyboardButton> row = new ArrayList<>();
+                for (int ad = rows; ad > 0; ad--) {
                     var inlineKeyboardButton = new InlineKeyboardButton();
                     inlineKeyboardButton.setText(buttonNameAndData[a]);
                     inlineKeyboardButton.setCallbackData(buttonNameAndData[a + 1]);
                     a = a + 2;
-                    rows.add(inlineKeyboardButton);
+                    row.add(inlineKeyboardButton);
                 }
-                columns.add(rows);
+                column.add(row);
             }
+
             var inlineKeyboardButton = new InlineKeyboardButton();
-            List<InlineKeyboardButton> rows = new ArrayList<InlineKeyboardButton>();
+            List<InlineKeyboardButton> row = new ArrayList<>();
             inlineKeyboardButton.setText("\u2B05 Go back");
             inlineKeyboardButton.setCallbackData(dataForBack);
-            rows.add(inlineKeyboardButton);
-            columns.add(rows);
-            inlineKeyboardMarkup.setKeyboard(columns);
+            row.add(inlineKeyboardButton);
+            column.add(row);
+
+            inlineKeyboardMarkup.setKeyboard(column);
+            editMessageText.setReplyMarkup(inlineKeyboardMarkup);
+            messageSender.sendEditMessage(editMessageText);
+        } else {
+            int b = 0;
+            var editMessageText = new EditMessageText();
+            editMessageText.setChatId(String.valueOf(callbackQuery.getMessage().getChatId()));
+            editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
+            editMessageText.setText(text);
+
+            var inlineKeyboardMarkup = new InlineKeyboardMarkup();
+            List<List<InlineKeyboardButton>> column = new ArrayList<>();
+
+            for (int ab = columns; ab > 0; ab--) {
+                List<InlineKeyboardButton> row = new ArrayList<>();
+                for (int ad = rows; ad > 0; ad--) {
+                    var inlineKeyboardButton = new InlineKeyboardButton();
+                    inlineKeyboardButton.setText(buttonNameAndData[b]);
+                    inlineKeyboardButton.setCallbackData(buttonNameAndData[b + 1]);
+                    b = b + 2;
+                    row.add(inlineKeyboardButton);
+                }
+                column.add(row);
+            }
+            inlineKeyboardMarkup.setKeyboard(column);
             editMessageText.setReplyMarkup(inlineKeyboardMarkup);
             messageSender.sendEditMessage(editMessageText);
         }
